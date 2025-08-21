@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiyumba Ma Primary School - Assessment System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="school-logo">TMP</div>
+            <h1>TIYUMBA MA PRIMARY SCHOOL</h1>
+            <p class="subtitle">Comprehensive Assessment Management System</p>
+            <p class="subtitle">Ghana Education Service Standards Compliant</p>
+        </div>
+
+        <!-- Alert Messages -->
+        <div id="alertContainer"></div>
+
+        <!-- Login Screen -->
+        <div id="loginScreen">
+            <div class="card login-card">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #667eea;">Teacher Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="teacherName">Teacher Name:</label>
+                        <input type="text" id="teacherName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="classLevel">Class Level:</label>
+                        <select id="classLevel" required>
+                            <option value="">Select Class</option>
+                            <option value="KG1">KG1</option>
+                            <option value="KG2">KG2</option>
+                            <option value="Primary 1">Primary 1</option>
+                            <option value="Primary 2">Primary 2</option>
+                            <option value="Primary 3">Primary 3</option>
+                            <option value="Primary 4">Primary 4</option>
+                            <option value="Primary 5">Primary 5</option>
+                            <option value="Primary 6">Primary 6</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Login to Dashboard</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div id="mainDashboard" class="hidden">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div>
+                        <h2 id="welcomeMessage">Welcome, Teacher</h2>
+                        <p id="classInfo">Managing Class: </p>
+                    </div>
+                    <button class="btn btn-danger" onclick="logout()">Logout</button>
+                </div>
+                
+                <div class="nav-buttons">
+                    <button class="btn" onclick="showSection('studentManagement')">Manage Students</button>
+                    <button class="btn" onclick="showSection('scoreRecording')">Record Scores</button>
+                    <button class="btn" onclick="showSection('reportGeneration')">Generate Reports</button>
+                    <button class="btn btn-success" onclick="printAllReports()">Print All Reports</button>
+                </div>
+            </div>
+
+            <!-- Student Management Section -->
+            <div id="studentManagement" class="card">
+                <h3>Student Management</h3>
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn-secondary" onclick="showAddStudentForm()">Add New Student</button>
+                </div>
+                
+                <!-- Add Student Form -->
+                <div id="addStudentForm" class="hidden" style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h4>Add New Student</h4>
+                    <form id="studentForm">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                            <div class="form-group">
+                                <label for="studentName">Full Name:</label>
+                                <input type="text" id="studentName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentId">Student ID:</label>
+                                <input type="text" id="studentId" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="parentContact">Parent's Phone:</label>
+                                <input type="tel" id="parentContact" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn">Add Student</button>
+                        <button type="button" class="btn btn-secondary" onclick="cancelAddStudent()">Cancel</button>
+                    </form>
+                </div>
+
+                <div id="studentsList" class="student-grid">
+                    <!-- Students will be populated here -->
+                </div>
+            </div>
+
+            <!-- Score Recording Section -->
+            <div id="scoreRecording" class="card hidden">
+                <h3>Record Assessment Scores</h3>
+                <div class="form-group">
+                    <label for="subjectSelect">Select Subject:</label>
+                    <select id="subjectSelect" onchange="loadScoreSheet()">
+                        <option value="">Choose Subject</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="English">English</option>
+                        <option value="Science">Science</option>
+                        <option value="OWOP">Our World Our People (OWOP)</option>
+                        <option value="Computing">Computing</option>
+                        <option value="Creative Arts">Creative Arts</option>
+                        <option value="French">French</option>
+                        <option value="Ghanaian Language">A Ghanaian Language</option>
+                    </select>
+                </div>
+                
+                <div id="scoreSheet"></div>
+                
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-success" onclick="saveAllScores()">Save All Scores</button>
+                </div>
+            </div>
+
+            <!-- Report Generation Section -->
+            <div id="reportGeneration" class="card hidden">
+                <h3>Generate Report Cards</h3>
+                <div class="form-group">
+                    <label for="termSelect">Select Term:</label>
+                    <select id="termSelect">
+                        <option value="First Term">First Term</option>
+                        <option value="Second Term">Second Term</option>
+                        <option value="Third Term">Third Term</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="academicYear">Academic Year:</label>
+                    <input type="text" id="academicYear" value="2024/2025">
+                </div>
+                
+                <button class="btn" onclick="generateAllReports()">Generate All Report Cards</button>
+                
+                <div id="reportCards"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/students.js"></script>
+    <script src="js/scores.js"></script>
+    <script src="js/reports.js"></script>
+</body>
+</html>
